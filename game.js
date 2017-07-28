@@ -26,7 +26,7 @@ var gameOfLife = {
     
     // once html elements are added to the page, attach events to them
     this.setupBoardEvents();
-    this.clearing();
+
   },
 
   forEachCell: function (iteratorFunc) {
@@ -39,7 +39,7 @@ var gameOfLife = {
     for(var i=0; i<gameOfLife.width; i++) {
       for(var j=0; j<gameOfLife.height; j++) {
         var cell00 = document.getElementById(i + '-' + j);
-        iteratorFunc(cell00);
+        iteratorFunc(cell00, i, j);
       }
     }
 
@@ -61,7 +61,6 @@ var gameOfLife = {
     // You need to add the click event on EVERY cell on the board
     
     var onCellClick = function () {
-      console.log(this);
       // QUESTION TO ASK YOURSELF: What is "this" equal to here?
       // how to set the style of the cell when it's clicked
       if (this.dataset.status == 'dead') {
@@ -73,47 +72,29 @@ var gameOfLife = {
       } 
     };
 
+
     var onClearClick = function() {
-      forEachCell(function(cell) {
+      gameOfLife.forEachCell(function(cell) {
       cell.className = 'dead';
       cell.dataset.status = 'dead'; 
-    });
-      
-    }
+    });  
+    };
 
     for(var i=0; i<gameOfLife.width; i++) {
       for(var j=0; j<gameOfLife.height; j++) {
         var cell00 = document.getElementById(i + '-' + j);
         cell00.addEventListener('click', onCellClick);
-        
       }
-    }
+    };
 
-    
+    var clear_bt = document.getElementById('clear_btn');
+    clear_bt.addEventListener('click', onClearClick);
 
-    
+
+    var step_btn = document.getElementById('step_btn');
+    step_btn.addEventListener('click', gameOfLife.step);
     
   },
-
-
-
-clearing: function() {
-  var clearingFunc = function() {
-     forEachCell(function(cell) {
-      cell.className = 'dead';
-      cell.dataset.status = 'dead'; 
-    });
-
-  }
-
-  var clear_bt = document.getElementById('clear_btn');
-  clear_bt.addEventListener('click', this.clearing);
-   
-   
-  },
-
-  
-  
 
   
 
@@ -142,33 +123,62 @@ clearing: function() {
     // You need to:
     // 1. Count alive neighbors for all cells
     // 2. Set the next state of all cells based on their alive neighbors
-    
-    for(var i=0; i<gameOfLife.width; i++) {
-      for(var j=0; j<gameOfLife.height; j++) {
-        var counter = 0;
-        var cell00 = document.getElementById(i + '-' + j);
+    var queue = [];
 
+    // for(var i=0; i<gameOfLife.width; i++) {
+    //   for(var j=0; j<gameOfLife.height; j++) {
+    //     var cell00 = document.getElementById(i + '-' + j);
+
+    gameOfLife.forEachCell(function(cell, i, j) {
+      var counter = 0;
         for(var e=-1; e<2; e++) {
           for(var l=-1; l<2; l++) {
             var neighbor = document.getElementById((i+e) + '-' + (j+l));
-            if(neighbor.className === 'alive') {
+            if(neighbor) {
+              if(neighbor.className === 'alive') {
               counter++
-            }
+              }
+            }  
           }
         }
-        
+
         if(counter === 3) {
-          cell00.className === 'alive';
-          this.dataset.status = 'alive';
-        }
+              queue.push('alive');
+              // this.dataset.status = 'alive';
+            }
+            else {
+              queue.push('dead');
+              // this.dataset.status = 'dead';
+            }
+        
+            
+    })
+
+
+   
+
+    gameOfLife.forEachCell(function(cell) {
+       var status = queue.shift();
+      console.log(status);
+      
+      if(status === 'alive') {
+        cell.className = 'alive';
+         cell.dataset.status = 'alive';
+      }
         else {
-          cell00.className === 'dead';
-          this.dataset.status = 'dead';
+          cell.className = 'dead';
+          cell.dataset.status = 'dead';
         }
+    });
+    
+
 
         // cell00.addEventListener('click', onCellClick);
-      }
-    }
+
+      // }
+    // }
+
+
 
 
   },
