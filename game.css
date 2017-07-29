@@ -2,9 +2,19 @@ body {
   padding: 10px;
 }
 
-h1, h2 {
+h1 {
+  text-align: center;
+  font-family: 'Zilla Slab Highlight', cursive;
+}
+
+p {
   text-align: center;
 }
+
+ol, ul {
+  text-align: center;
+}
+
 #board{
   margin: 0 auto;
 }
@@ -25,5 +35,9 @@ td.dead {
 
 #control_panel {
   margin: 10px auto;
+  text-align: center;
+}
+
+footer {
   text-align: center;
 }

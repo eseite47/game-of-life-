@@ -6,29 +6,35 @@
   <title>Game of Life - Fullstack Academy</title>
   <link rel="stylesheet" href="libraries/bootstrap.min.css">
   <link rel="stylesheet" href="game.css">
+  <link href="https://fonts.googleapis.com/css?family=Zilla+Slab+Highlight" rel="stylesheet">
 </head>
 
 <body>
-  <h2>Game of Life</h2>
+  <h1>Game of Life</h1>
+    <p>Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.<br>
+    Any live cell with two or three live neighbours lives on to the next generation.<br>
+    Any live cell with more than three live neighbours dies, as if by overpopulation.<br>
+    Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.<br>
+  <p>To start the simlulation, click on the board to place living cells, and play it step by step.</p>
   <table id='board'></table>
-  
+
   <div id='control_panel'>
     <button id='step_btn' class='btn btn-success'>Step</button>
-    <button id='play_btn' class='btn btn-primary'>Play</button>
-    <button id='pause_btn' class='btn btn-primary'>Pause</button>
-    <button id='reset_btn' class='btn btn-warning'>Reset Random</button>
+    <button id='play_btn' class='btn'>Auto Play</button>
+    <button id='pause_btn' class='btn'>Pause</button>
+    <button id='reset_btn' class='btn'>Reset Random</button>
     <button id='clear_btn' class='btn btn-info'>Clear</button>
   </div>
-  
+
   <br><br>
 
   <footer class="footer">
     <div class="container">
-      <p class="text-muted">Built by [me] at <a href="http://www.fullstackacademy.com/">Fullstack Academy</a></p>
+      <p class="text-muted">Built by Elisabeth at <a href="http://www.fullstackacademy.com/">Fullstack Academy</a></p>
     </div>
   </footer>
-  
+
   <script src="game.js"></script>
-  
+
 </body>
 </html>
