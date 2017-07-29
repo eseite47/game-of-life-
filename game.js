@@ -134,7 +134,6 @@ var gameOfLife = {
   },
 
   pause : function(){
-    console.log('paused');
     clearInterval(gameOfLife.stepInterval)
     gameOfLife.stepInterval = null;
   }
