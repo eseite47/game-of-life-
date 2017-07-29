@@ -1,7 +1,7 @@
 var gameOfLife = {
 
-  width: 24,
-  height: 24, // width and height dimensions of the board
+  width: 25,
+  height: 25, // width and height dimensions of the board
   stepInterval: null, // should be used to hold reference to an interval that is "playing" the game
 
   createAndShowBoard: function () {
@@ -39,6 +39,7 @@ var gameOfLife = {
   },
 
   setupBoardEvents: function() {
+
     var onCellClick = function () {
       if (this.dataset.status == 'dead') {
         this.className = 'alive';
@@ -50,30 +51,34 @@ var gameOfLife = {
     };
 
     var onClearClick = function() {
+      if(gameOfLife.stepInterval) {
+        console.log(gameOfLife.stepInterval);
+        clearInterval(gameOfLife.stepInterval)
+        this.stepInterval = null;
+      }
       gameOfLife.forEachCell(function(cell) {
       cell.className = 'dead';
       cell.dataset.status = 'dead';
     });
     };
 
-    for (var i=0; i<gameOfLife.width; i++) {
-      for (var j=0; j<gameOfLife.height; j++) {
-        var cell00 = document.getElementById(i + '-' + j);
-        cell00.addEventListener('click', onCellClick);
-      }
-    }
-
-    var clear_bt = document.getElementById('clear_btn');
-    clear_bt.addEventListener('click', onClearClick);
-
-
-    var step_btn = document.getElementById('step_btn');
-    step_btn.addEventListener('click', gameOfLife.step);
+    //Adding cells to the board
+    window.board.addEventListener('click', (event) => onCellClick.call(event.target))
+    //Step Button
+    window.step_btn.addEventListener('click', e => this.step())
+    //AutoPlay Button
+    window.play_btn.addEventListener('click', e => this.enableAutoPlay())
+    //Pause Button
+    window.pause_btn.addEventListener('click', e => this.pause())
+    //Clear Button
+    window.clear_btn.addEventListener('click', e => onClearClick())
+    //Randomize
+    window.reset_btn.addEventListener('click', e => this.randomize())
 
   },
 
   randomize: function() {
-    forEachCell(function(cell) {
+    gameOfLife.forEachCell(function(cell) {
       var rand = Math.round(Math.random());
       if (rand === 0) {
         cell.className = 'dead';
@@ -112,25 +117,26 @@ var gameOfLife = {
     })
 
     gameOfLife.forEachCell(function(cell) {
-       var status = queue.shift();
-      console.log(status);
-
+      var status = queue.shift();
       if (status === 'alive') {
         cell.className = 'alive';
-         cell.dataset.status = 'alive';
+        cell.dataset.status = 'alive';
       }
-        else {
-          cell.className = 'dead';
-          cell.dataset.status = 'dead';
-        }
+      else {
+        cell.className = 'dead';
+        cell.dataset.status = 'dead';
+      }
     });
   },
 
   enableAutoPlay: function () {
-    // Start Auto-Play by running the 'step' function
-    // automatically repeatedly every fixed time interval
-  }
+    gameOfLife.stepInterval = setInterval(() => this.step(), 200)
+  },
 
+  pause : function(){
+    clearInterval(gameOfLife.stepInterval)
+    gameOfLife.stepInterval = null;
+  }
 };
 
 gameOfLife.createAndShowBoard();
